@@ -1,13 +1,32 @@
-FROM node:8
+FROM node:8-alpine
 
-RUN apt-get update && \
-    apt-get install -y mysql-client-5.5 curl unzip && \
-    apt-get clean
+LABEL maintainer Pedro Robson Leão <pedro.leao@gmail.com>
 
-RUN wget https://github.com/ipoddubny/webcdr/archive/master.zip -O /tmp/webcdr.zip && unzip /tmp/webcdr.zip -d /tmp
-	
-WORKDIR /tmp/webcdr-master
+RUN wget https://github.com/ipoddubny/webcdr/archive/master.zip -O /tmp/webcdr.zip && unzip /tmp/webcdr.zip -d /opt
 
-RUN npm -g install bower browserify && cd public/ && bower install --allow-root && cd .. && npm install && npm run build
+ENV APP_HOME=/opt/webcdr-master
+ENV ENTRYPOINT=./entrypoint.sh
 
-CMD node /tmp/webcdr-master/server.js
+WORKDIR ${APP_HOME}
+
+RUN apk add --no-cache \
+        mysql-client \
+        git \
+        python3 \
+        make && \
+    npm -g install \
+        bower \
+        browserify && \
+    cd public/ && \
+    bower install --allow-root && \
+    cd .. && \
+    npm install && \
+    npm run build
+
+ADD ${ENTRYPOINT} ${APP_HOME}/
+
+EXPOSE 9030
+
+CMD chmod 755 ${APP_HOME}/entrypoint.sh
+
+ENTRYPOINT [ "sh","/opt/webcdr-master/entrypoint.sh" ]

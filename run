@@ -1,6 +1,0 @@
-#!/bin/bash
-
-docker run \
--v $(pwd)/config.ini:/tmp/webcdr-master/config.ini \
--p "9030:9030" \
--i -t mifistor/webcdr
