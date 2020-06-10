@@ -6,9 +6,7 @@ networks:
 
 services:
     db:
-        # image: nimmis/alpine-mariadb
         image: mysql:5
-        # container_name: mariadb
         container_name: mysql
         environment: 
             - MYSQL_ROOT_PASSWORD=pwdroot
