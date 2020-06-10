@@ -2,14 +2,13 @@ FROM node:8-alpine
 
 LABEL maintainer Pedro Robson Leão <pedro.leao@gmail.com>
 
-RUN wget https://github.com/ipoddubny/webcdr/archive/master.zip -O /tmp/webcdr.zip && unzip /tmp/webcdr.zip -d /opt
-
 ENV APP_HOME=/opt/webcdr-master
 ENV ENTRYPOINT=./entrypoint.sh
 
-WORKDIR ${APP_HOME}
 
-RUN apk add --no-cache \
+RUN wget https://github.com/ipoddubny/webcdr/archive/master.zip -O /tmp/webcdr.zip && unzip /tmp/webcdr.zip -d /opt && \
+    cd /opt/webcdr-master && \
+    apk add --no-cache \
         mysql-client \
         git \
         python3 \
@@ -21,7 +20,10 @@ RUN apk add --no-cache \
     bower install --allow-root && \
     cd .. && \
     npm install && \
-    npm run build
+    npm run build && \
+    apk del git python3 make
+
+WORKDIR ${APP_HOME}
 
 ADD ${ENTRYPOINT} ${APP_HOME}/
 
