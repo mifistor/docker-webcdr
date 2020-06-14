@@ -59,7 +59,9 @@ function _start() {
         }
 
         cd ${APP_HOME} && {
-            cat config.ini
+            cat config.ini 
+
+            echo ":: open for the business !";
             node ./server.js
         }
     }
@@ -78,10 +80,9 @@ function main() {
     while [ $i -lt 30 ]; do
         i=$((i+1));
         nc -zv ${DB_CONNECTION_HOST} 3306 && {
-            echo ":: open for the business !";
             _start;
         }
-        sleep 10;
+        sleep 20;
         echo ":: waiting db in ${DB_CONNECTION_HOST}/${DB_CONNECTION_DATABASE} retry ${i}...";
     done
 }
