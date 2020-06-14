@@ -1,4 +1,4 @@
-#!/usr/bin/sh -xv
+#!/bin/sh
 
 APP_HOME="/opt/webcdr-master";
 
@@ -66,6 +66,14 @@ function _start() {
 }
 
 function main() {
+
+    [ ! -z "$@" ] && { 
+        ${@}
+        return $?
+    }
+
+    [ -z "${DB_CONNECTION_HOST}" ] && return 1;
+
     local i=0
     while [ $i -lt 30 ]; do
         i=$((i+1));

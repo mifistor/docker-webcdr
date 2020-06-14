@@ -1,7 +1,7 @@
 version: '3.3'
 
 networks: 
-    cdr_net:
+    pabx_net:
         driver: bridge
 
 services:
@@ -16,13 +16,14 @@ services:
         ports: 
             - '13306:3306'
         volumes:
-            - webcdr_db_data:/data
+            - pabx_db_data:/data
         restart: always
         networks: 
-            - 'cdr_net'
+            - 'pabx_net'
 
     cdr:
-        build: .
+        image: pedroleao/webcdr:0.9.0-alpine
+        # build: .
         container_name: webcdr
         environment: 
             - TZ=America/Sao_Paulo
@@ -41,15 +42,39 @@ services:
             - AUTH_AD_CONNECTION_PASSWORD=cdruser_ad_password
         ports: 
             - '9030:9030'
+        entrypoint: 
+            - './entrypoint.sh'
         volumes:
-            - webcdr_web_data:/var/spool/asterisk/monitor
+            - pabx_web_data:/var/spool/asterisk/monitor
         depends_on: 
             - db
         restart: always
         networks: 
-            - 'cdr_net'
+            - 'pabx_net'
+
+    # pabx:
+    #     image: pedroleao/asterisk:16.11
+    #     container_name: pabx
+    #     entrypoint: 
+    #         - DB_CONNECTION_HOST=db
+    #         - DB_CONNECTION_USER=cdrdb
+    #         - DB_CONNECTION_PASSWORD=cdrpwd
+    #         - DB_CONNECTION_DATABASE=asteriskcdrdb
+    #         - ACL=192.168.0.0\\/24
+    #     ports:
+    #         - '5060:5060'
+    #     entrypoint:
+    #         - './entrypoint.sh'
+    #     # mapear logs e gravações
+    #     # volumes: 
+    #     #     -
+    #     depends_on: 
+    #         - cdr
+    #     restart: always
+    #     networks: 
+    #         - 'pabx_net'
 
 volumes:
-    webcdr_db_data:
-    webcdr_web_data:
+    pabx_db_data:
+    pabx_web_data:
     

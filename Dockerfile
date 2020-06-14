@@ -29,6 +29,4 @@ ADD ${ENTRYPOINT} ${APP_HOME}/
 
 EXPOSE 9030
 
-CMD chmod 755 ${APP_HOME}/entrypoint.sh
-
-ENTRYPOINT [ "sh","/opt/webcdr-master/entrypoint.sh" ]
+ENTRYPOINT [ "./entrypoint.sh" ]
