@@ -38,8 +38,6 @@ services:
       - AUTH_AD_CONNECTION_PASSWORD=cdruser_ad_password
     ports:
       - '9030:9030'
-    entrypoint:
-      - ./entrypoint.sh
     volumes:
       - 'pabx_web_data:/var/spool/asterisk/monitor'
     depends_on:
