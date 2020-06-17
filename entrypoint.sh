@@ -49,20 +49,22 @@ function _start() {
 
     [ -d  ${APP_HOME} ] && {
 
-        local SQLFILE="${APP_HOME}/install/db.sql";
+        [ ${DB_INIT^^} == "TRUE" ] && {
+            local SQLFILE="${APP_HOME}/install/db.sql";
 
-        [ -f ${SQLFILE} ] && {
-            set -xv;
-            mysql ${DB_CONNECTION_DATABASE} -u${DB_CONNECTION_USER} -p${DB_CONNECTION_PASSWORD} -h${DB_CONNECTION_HOST} < $SQLFILE && \
-            mv ${SQLFILE} ${SQLFILE//.sql/}.$(date -I).sql;
-            set +xv;
-        }
+            [ -f ${SQLFILE} ] && {
+                set -xv;
+                mysql ${DB_CONNECTION_DATABASE} -u${DB_CONNECTION_USER} -p${DB_CONNECTION_PASSWORD} -h${DB_CONNECTION_HOST} < $SQLFILE && \
+                mv ${SQLFILE} ${SQLFILE//.sql/}.$(date -I).sql;
+                set +xv;
+            }
 
-        cd ${APP_HOME} && {
-            cat config.ini 
+            cd ${APP_HOME} && {
+                cat config.ini 
 
-            echo ":: open for the business !";
-            node ./server.js
+                echo ":: open for the business !";
+                node ./server.js
+            }
         }
     }
 }

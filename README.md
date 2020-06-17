@@ -20,6 +20,7 @@ docker run \
    --env DB_CONNECTION_PASSWORD=cdrpwd \
    --env DB_CONNECTION_DATABASE=asteriskcdrdb \
    --env DB_CONNECTION_CHARSET=utf8 \
+   --env DB_INIT=true \
    --env CDR_TABLE=cdr \
    --env SESSION_KEY=123hjhfds7&&&kjfh&&&788 \
    --env AUTH_AD_DOMAIN=exemple \
