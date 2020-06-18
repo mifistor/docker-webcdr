@@ -49,7 +49,7 @@ function _start() {
 
     [ -d  ${APP_HOME} ] && {
 
-        [ ${DB_INIT^^} == "TRUE" ] && {
+        [ ${DB_INIT} == "TRUE" ] && {
             local SQLFILE="${APP_HOME}/install/db.sql";
 
             [ -f ${SQLFILE} ] && {
