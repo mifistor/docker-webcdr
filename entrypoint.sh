@@ -58,13 +58,13 @@ function _start() {
                 mv ${SQLFILE} ${SQLFILE//.sql/}.$(date -I).sql;
                 set +xv;
             }
+        }
 
-            cd ${APP_HOME} && {
-                cat config.ini 
+        cd ${APP_HOME} && {
+            cat config.ini 
 
-                echo ":: open for the business !";
-                node ./server.js
-            }
+            echo ":: open for the business !";
+            node ./server.js
         }
     }
 }
